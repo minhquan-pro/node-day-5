@@ -5,10 +5,20 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
+const responseFormat = require("@/middlewares/responseFormat");
+const notFound = require("@/middlewares/notFound");
+const errorHandler = require("@/middlewares/errorHandle");
+
+app.use(express.json());
+app.use(responseFormat);
+
 app.get("/", (req, res) => {
 	res.send("Hello World!");
 });
 
+app.use(notFound);
+app.use(errorHandler);
+
 app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`);
+	console.log(`App listening on port ${port}`);
 });
