@@ -5,10 +5,12 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
+const rootRoute = require("@/routes");
 const responseFormat = require("@/middlewares/responseFormat");
 const notFound = require("@/middlewares/notFound");
 const errorHandler = require("@/middlewares/errorHandle");
 
+app.use("/api", rootRoute);
 app.use(express.json());
 app.use(responseFormat);
 

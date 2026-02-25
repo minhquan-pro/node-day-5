@@ -1,5 +1,5 @@
 const errorHandle = (err, req, res, _) => {
-	res.error(err ?? "Server Error");
+	res.error(String(err) ?? "Server Error");
 };
 
 module.exports = errorHandle;
