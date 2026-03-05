@@ -19,6 +19,25 @@ class AuthService {
 		};
 	}
 
+	async handleLogin(email, password) {
+		const user = await authModel.findUserByEmail(email);
+
+		if (!user) {
+			return [true, null];
+		}
+
+		const isValid = await bcrypt.compare(password, user.password);
+
+		if (isValid) {
+			const accessToken = await this.generateAccessToken(user);
+			const accessTokenTTL = authConfig.accessTokenTTL;
+
+			return [null, { user, accessToken, accessTokenTTL }];
+		}
+
+		return [true, null];
+	}
+
 	async generateAccessToken(user) {
 		const expireAt = Math.floor(Date.now() / 1000 + authConfig.accessTokenTTL);
 		const payload = { sub: user.id, exp: expireAt };

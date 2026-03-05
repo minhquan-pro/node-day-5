@@ -8,6 +8,18 @@ class AuthModel {
 		return user;
 	}
 
+	async login(email, password) {
+		const query = "select * from user where email = ? and password = ?";
+		const [rows] = await pool.query(query, [email, password]);
+		return rows;
+	}
+
+	async findUserByEmail(email) {
+		const query = `select id, password, email, created_at, updated_at from users where email = ?`;
+		const [rows] = await pool.query(query, [email]);
+		return rows[0];
+	}
+
 	async findUserById(id) {
 		const query = `select id, email, created_at, updated_at from users where id = ?`;
 		const [rows] = await pool.query(query, [id]);

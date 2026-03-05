@@ -6,7 +6,14 @@ const register = async (req, res) => {
 	res.success(result);
 };
 
-const login = async () => {};
+const login = async (req, res) => {
+	const { email, password } = req.body;
+	const [error, data] = await authService.handleLogin(email, password);
+
+	if (error) return res.error(error);
+
+	return res.success(data);
+};
 const getCurrentUser = async () => {};
 
 module.exports = { login, register, getCurrentUser };
