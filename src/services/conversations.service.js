@@ -11,9 +11,6 @@ class Conversation {
 		}
 
 		const result = await conversationModel.createChat(createdBy, name, type);
-
-		console.log(result.insertId);
-
 		await this.addParticipant(result?.insertId, participantIds);
 
 		return result;
@@ -22,6 +19,11 @@ class Conversation {
 	async addParticipant(conversationId, participantIds) {
 		const values = participantIds.map((id) => [conversationId, id]);
 		await conversationModel.addParticipant(values);
+	}
+
+	async fetchUserConversations(id) {
+		const result = await conversationModel.fetchUserConversations(id);
+		return result;
 	}
 }
 

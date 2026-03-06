@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 
 const authRequired = async (req, res, next) => {
 	const accessToken = req.headers?.authorization?.replace("Bearer", "").trim();
-
 	if (!accessToken) return res.error();
 
 	const payload = jwt.verify(accessToken, authConfig.jwtSecret);

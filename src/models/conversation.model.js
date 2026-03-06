@@ -16,6 +16,15 @@ class ConversationModel {
 
 		return rows;
 	}
+
+	async fetchUserConversations(id) {
+		const [result] = await pool.query("select conversation_id from conversation_participants where user_id = ?", [
+			id,
+		]);
+		const conversationIds = result.map(({ conversation_id }) => conversation_id);
+		const [rows] = await pool.query(`select * from conversations where id in (?)`, [conversationIds]);
+		return rows;
+	}
 }
 
 module.exports = new ConversationModel();
