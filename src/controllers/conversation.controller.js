@@ -5,8 +5,8 @@ const fetchCurrentUser = () => {};
 const fetchAllMessages = () => {};
 
 const createNew = async (req, res) => {
-	const { name, type, created_by } = req.body;
-	const result = await conversationsService.createChat(name, type, created_by);
+	const { name, type } = req.body;
+	const result = await conversationsService.createChat(name, type);
 };
 
 const addUser = () => {};

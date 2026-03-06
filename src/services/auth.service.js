@@ -46,6 +46,11 @@ class AuthService {
 
 		return token;
 	}
+
+	async getUserById(id) {
+		const user = await authModel.findUserById(id);
+		return user;
+	}
 }
 
 module.exports = new AuthService();
