@@ -17,6 +17,11 @@ class ConversationModel {
 		return rows;
 	}
 
+	async fetchConversationById(id) {
+		const [rows] = await pool.query("select * from conversations where id = ?", [id]);
+		return rows[0];
+	}
+
 	async fetchUserConversations(id) {
 		const [result] = await pool.query("select conversation_id from conversation_participants where user_id = ?", [
 			id,
@@ -24,6 +29,15 @@ class ConversationModel {
 		const conversationIds = result.map(({ conversation_id }) => conversation_id);
 		const [rows] = await pool.query(`select * from conversations where id in (?)`, [conversationIds]);
 		return rows;
+	}
+
+	async isUserInConversation(userId, conversationId) {
+		const [rows] = await pool.query(
+			"select count(*) as count from conversation_participants where user_id = ? and conversation_id = ?",
+			[userId, conversationId],
+		);
+
+		return rows[0].count > 0;
 	}
 }
 
