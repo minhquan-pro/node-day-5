@@ -17,6 +17,14 @@ class ConversationModel {
 		return rows;
 	}
 
+	async sendNewMessage(messageData) {
+		const { conversationId, userId, content } = messageData;
+
+		const query = "insert into messages (conversation_id, sender_id, content) values (?, ?, ?)";
+		const [rows] = await pool.query(query, [conversationId, userId, content]);
+		return rows.affectedRows;
+	}
+
 	async fetchConversationById(id) {
 		const [rows] = await pool.query("select * from conversations where id = ?", [id]);
 		return rows[0];

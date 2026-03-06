@@ -42,6 +42,27 @@ class Conversation {
 		];
 	}
 
+	async sendNewMessage(conversationId, userId, content) {
+		const conversation = await conversationModel.fetchConversationById(conversationId);
+		if (!conversation) throw new Error("Conversation not found");
+
+		const isInConversation = await conversationModel.isUserInConversation(userId, conversationId);
+		if (!isInConversation) throw new Error("User is not in this conversation");
+
+		const messageData = {
+			conversationId,
+			userId,
+			content: content.trim(),
+		};
+
+		await conversationModel.sendNewMessage(messageData);
+
+		return {
+			...messageData,
+			status: "sent",
+		};
+	}
+
 	async addParticipant(conversationId, participantIds) {
 		const values = participantIds.map((id) => [conversationId, id]);
 		await conversationModel.addParticipant(values);

@@ -29,7 +29,21 @@ const addUser = async (req, res) => {
 	return res.success(data);
 };
 
-const sendNewMessage = () => {};
+const sendNewMessage = async (req, res) => {
+	const content = req.body.content;
+	const userId = req.auth.user.id;
+	if (!userId) {
+		return res.error("User ID is required");
+	}
+
+	const conversationId = req.params.id;
+	if (!conversationId) {
+		return res.error("Conversation ID is required");
+	}
+
+	const result = await conversationsService.sendNewMessage(conversationId, userId, content.trim());
+	res.success(result);
+};
 
 const fetchUserConversations = async (req, res) => {
 	const user = req.auth.user;

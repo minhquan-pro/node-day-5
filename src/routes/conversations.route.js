@@ -6,11 +6,11 @@ const authRequired = require("@/middlewares/authRequired");
 
 // GET
 router.get("/", authRequired, conversationsController.fetchUserConversations);
-router.get("/:id/messages", conversationsController.fetchAllMessages);
+router.get("/:id/messages", authRequired, conversationsController.fetchAllMessages);
 
 // POST
 router.post("/", authRequired, conversationsController.createNew);
 router.post("/:id/participants", conversationsController.addUser);
-router.post("/:id/messages", conversationsController.sendNewMessage);
+router.post("/:id/messages", authRequired, conversationsController.sendNewMessage);
 
 module.exports = router;
