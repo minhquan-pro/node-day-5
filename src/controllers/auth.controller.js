@@ -14,6 +14,5 @@ const login = async (req, res) => {
 
 	return res.success(data);
 };
-const getCurrentUser = async () => {};
 
-module.exports = { login, register, getCurrentUser };
+module.exports = { login, register };
