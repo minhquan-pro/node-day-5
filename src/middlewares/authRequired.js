@@ -9,7 +9,7 @@ const authRequired = async (req, res, next) => {
 
 	const payload = jwt.verify(accessToken, authConfig.jwtSecret);
 
-	if (payload.exp < Date.now()) return res.error();
+	if (payload.exp < Date.now() / 1000) return res.error();
 
 	const userId = payload.sub;
 	const user = await authService.getUserById(userId);

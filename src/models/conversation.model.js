@@ -1,10 +1,20 @@
 const pool = require("@/config/database");
 
 class ConversationModel {
-	async createChat(name, type, createdBy) {
-		const query = "insert into conversations (name, type, created_by) values (?, ?, ?)";
-		const [rows] = await pool.query(query, [name, type, createdBy]);
-		console.log(rows);
+	async createChat(createdBy, name, type) {
+		const query = "insert into conversations (created_by, name, type) values (?, ?, ?)";
+		const [rows] = await pool.query(query, [createdBy, name, type]);
+		return rows;
+	}
+
+	async addParticipant(values) {
+		const placeholders = values.map((value) => "(?, ?)").join(", ");
+		const flattenedValues = values.flat();
+
+		const query = `insert into conversation_participants (conversation_id, user_id) values ${placeholders}`;
+		const [rows] = await pool.query(query, flattenedValues);
+
+		return rows;
 	}
 }
 
