@@ -51,7 +51,15 @@ const fetchUserConversations = async (req, res) => {
 	res.success(result);
 };
 
-const fetchAllMessages = () => {};
+const fetchAllMessages = async (req, res) => {
+	const conversationId = req.params.id;
+	if (!conversationId) {
+		return res.error("Conversation ID is required");
+	}
+
+	const result = await conversationsService.fetchAllMessages(conversationId);
+	res.success(result);
+};
 
 module.exports = {
 	createNew,

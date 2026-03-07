@@ -1,3 +1,4 @@
+const authModel = require("@/models/auth.model");
 const conversationModel = require("@/models/conversation.model");
 
 class Conversation {
@@ -70,6 +71,35 @@ class Conversation {
 
 	async fetchUserConversations(id) {
 		const result = await conversationModel.fetchUserConversations(id);
+		return result;
+	}
+
+	async fetchAllMessages(conversationId) {
+		const allMessages = await conversationModel.fetchAllMessages(conversationId);
+		if (!allMessages || allMessages.length === 0) {
+			return [];
+		}
+
+		const uniqueSenderIds = [...new Set(allMessages.map((msg) => msg.sender_id))];
+		const users = await authModel.findUserById(uniqueSenderIds);
+
+		const userMap = {};
+		users.forEach((user) => {
+			userMap[user.id] = user;
+		});
+
+		const result = allMessages.map((message) => {
+			return {
+				id: message.id,
+				content: message.content,
+				createdAt: message.created_at,
+				updatedAt: message.updated_at,
+				sender: {
+					...userMap[message.sender_id],
+				},
+			};
+		});
+
 		return result;
 	}
 }

@@ -39,6 +39,13 @@ class ConversationModel {
 		return rows;
 	}
 
+	async fetchAllMessages(id) {
+		const [rows] = await pool.query("select * from messages where conversation_id = ? order by created_at desc", [
+			id,
+		]);
+		return rows;
+	}
+
 	async isUserInConversation(userId, conversationId) {
 		const [rows] = await pool.query(
 			"select count(*) as count from conversation_participants where user_id = ? and conversation_id = ?",

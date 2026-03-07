@@ -20,10 +20,10 @@ class AuthModel {
 		return rows[0];
 	}
 
-	async findUserById(id) {
-		const query = `select id, email, created_at, updated_at from users where id = ?`;
-		const [rows] = await pool.query(query, [id]);
-		return rows[0];
+	async findUserById(ids) {
+		const query = `select id, email, created_at, updated_at from users where id in (?)`;
+		const [rows] = await pool.query(query, [ids]);
+		return rows;
 	}
 }
 
