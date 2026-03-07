@@ -2,7 +2,7 @@ const userService = require("@/services/user.service");
 
 const findUserByEmail = async (req, res) => {
 	try {
-		const email = req.query.q;
+		const email = req.query?.q;
 		if (!email) {
 			return res.error("Email is required");
 		}
